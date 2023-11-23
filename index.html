@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Tab</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      border-radius: 10px;
+      border: 7px solid red; /* Initial border color */
+      transition: border-color 0.5s;
+      position: relative; /* Added for fireflies */
+    }
+
+    #search-bar {
+      padding: 15px;
+      border: 3px solid #ff0000; /* Initial border color (red) */
+      border-radius: 50px;
+      width: 500px;
+      font-size: 18px;
+      background-color: transparent;
+      color: #fff;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.7s ease; /* Border color transition (700ms) */
+    }
+
+    #search-bar:focus {
+      border-color: #00ff00; /* Border color on focus (green) */
+    }
+
+    .buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .custom-button {
+      display: inline-block;
+      height: 100px;
+      width: 100px;
+      margin: 10px;
+      background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+      background-size: 600% 100%;
+      color: #fff;
+      border: 3px solid #0000ff; /* Initial border color (blue) */
+      border-radius: 50%;
+      text-decoration: none;
+      font-size: 18px;
+      cursor: pointer;
+      transition: border-color 0.7s ease; /* Border color transition (700ms) */
+    }
+
+    .custom-button img {
+      width: 100%; /* Make the image cover the button */
+      height: 100%; /* Make the image cover the button */
+      object-fit: cover; /* Keep the aspect ratio and cover the button */
+      border-radius: 50%; /* Match the button's border radius */
+    }
+
+    .fireflies-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* Updated firefly styles */
+    .firefly {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: moveFirefly 5s linear infinite;
+    }
+
+    @keyframes moveFirefly {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(100px, 100px); /* Adjust the distance and direction of movement */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <input type="text" id="search-bar" placeholder="Search Google" onkeydown="searchOnEnter(event)">
+    <div class="buttons-container">
+      <a href="https://www.messenger.com/" class="custom-button"><img src="1.png"></a>
+      <a href="https://www.gmail.com" class="custom-button"><img src="2.png"></a>
+      <a href="https://www.youtube.com" class="custom-button"><img src="3.png"></a>
+	        <a href="https://futurewindows15.netlify.app/" class="custom-button"><img src="icon2.png"></a>
+    </div>
+    <div class="buttons-container">
+      <a href="https://myislam.org/quran-transliteration/" class="custom-button"><img src="7.png"></a>
+      <a href="https://www.canva.com/" class="custom-button"><img src="4.png"></a>
+      <a href="https://chat.openai.com/" class="custom-button"><img src="6.jfif"></a>
+	        <a href="https://shoponlineinc.netlify.app/" class="custom-button"><img src="Logo.jpg"></a>
+ 
+    </div>
+    <!-- Fireflies Container -->
+    <div class="fireflies-container"></div>
+  </div>
+  <script>
+    const elementsToChangeColor = document.querySelectorAll('.container, #search-bar, .custom-button');
+    let colorIndex = 0;
+    const colors = ['#ff0000', '#00ff00', '#0000ff']; // You can add more colors
+
+    function changeColors() {
+      colorIndex = (colorIndex + 1) % colors.length;
+      const color = colors[colorIndex];
+
+      elementsToChangeColor.forEach(element => {
+        element.style.borderColor = color;
+      });
+    }
+
+    setInterval(changeColors, 700); // Change border colors every 0.7 seconds
+
+    function searchOnEnter(event) {
+      if (event.key === 'Enter') {
+        const query = document.getElementById('search-bar').value;
+        const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        window.location.href = searchUrl;
+      }
+    }
+
+    // Clear the search input when the page is reloaded
+    window.onload = function() {
+      document.getElementById('search-bar').value = '';
+    };
+
+    // JavaScript code for creating fireflies
+    function createFireflies() {
+      const container = document.querySelector('.fireflies-container');
+      const numFireflies = 5; // Number of fireflies you want every 600ms
+
+      setInterval(() => {
+        for (let i = 0; i < numFireflies; i++) {
+          const firefly = document.createElement('div');
+          firefly.className = 'firefly';
+          const x = Math.random() * 100; // Random X position
+          const y = Math.random() * 100; // Random Y position
+          const randomColor = getRandomColor(); // Get a random color
+          firefly.style.left = `${x}%`;
+          firefly.style.top = `${y}%`;
+          firefly.style.backgroundColor = randomColor;
+          container.appendChild(firefly);
+
+          setTimeout(() => {
+            container.removeChild(firefly);
+          }, 5000); // Remove firefly after 5 seconds
+        }
+      }, 300); // Add fireflies every 600 milliseconds
+    }
+
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    createFireflies();
+  </script>
+</body>
+</html>
